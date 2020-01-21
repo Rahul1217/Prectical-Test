@@ -1,0 +1,60 @@
+﻿@{
+    ViewBag.Title = "Product";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+
+}
+
+<script src="~/Scripts/jquery.unobtrusive-ajax.js"></script>
+<style>
+   
+</style>
+<div class="page-header">
+    <h1>View Product</h1>
+</div>
+
+<div id="divCategoryList">
+    @Html.Action("ProductDetail", "Product")
+</div>
+
+@using (Ajax.BeginForm("ProductDetail", "Product",
+                    new AjaxOptions
+                    {
+                        HttpMethod = "Post",
+                        UpdateTargetId = "divCategoryList"
+                    }, new { id = "form_ProductDetail" }))
+{
+    <input type="hidden" id="PageNo" name="PageNo" value="1">
+    <input type="hidden" id="PageSize" name="PageSize" value="10">
+    <input type="hidden" id="totalpage" name="totalpage" value="0">
+    <input type="hidden" id="totalRecord" name="totalRecord" value="0">
+}
+<script>
+    function callnextpage(pageno) {
+        debugger;
+        $('#PageNo').val(pageno);
+        $.ajax({
+            type: 'POST',
+            url: '/Product/sessionvalueset',
+            data: { pageno: pageno },
+            cache: false,
+            success: function (result) {
+                window.location.href = "/Product/Product";
+            }
+        });
+        //$('#form_ProductDetail').submit();
+    }
+    function callprevpage(pageno) {
+        debugger;
+        $('#PageNo').val(pageno);
+        $.ajax({
+            type: 'POST',
+            url: '/Product/sessionvalueset',
+            data: { pageno: pageno },
+            cache: false,
+            success: function (result) {
+                window.location.href = "/Product/Product";
+            }
+        });
+        //$('#form_ProductDetail').submit();
+    }
+</script>

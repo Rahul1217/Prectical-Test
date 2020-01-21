@@ -1,0 +1,68 @@
+﻿<?xml version="1.0" encoding="utf-8"?><Database Name="DbProduct" Class="ProductDataContext" xmlns="http://schemas.microsoft.com/linqtosql/dbml/2007">
+  <Connection Mode="WebSettings" ConnectionString="Data Source=RHUL-PC;Initial Catalog=DbProduct;Integrated Security=True" SettingsObjectName="System.Configuration.ConfigurationManager.ConnectionStrings" SettingsPropertyName="DbProductConnectionString" Provider="System.Data.SqlClient" />
+  <Table Name="dbo.tblCategory" Member="tblCategories">
+    <Type Name="tblCategory">
+      <Column Name="CategoryId" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="CategoryName" Type="System.String" DbType="NVarChar(500)" CanBeNull="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.tblProducts" Member="tblProducts">
+    <Type Name="tblProduct">
+      <Column Name="ProductId" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="CategoryId" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="ProductName" Type="System.String" DbType="NVarChar(500)" CanBeNull="true" />
+      <Association Name="tblProduct_tblProduct" Member="tblProduct2" ThisKey="ProductId" OtherKey="ProductId" Type="tblProduct" Cardinality="One" />
+      <Association Name="tblProduct_tblProduct" Member="tblProduct1" ThisKey="ProductId" OtherKey="ProductId" Type="tblProduct" IsForeignKey="true" />
+    </Type>
+  </Table>
+  <Function Name="dbo.SP_DeleteCategory" Method="SP_DeleteCategory" IsComposable="true">
+    <Parameter Name="CategoryId" Parameter="categoryId" Type="System.Int32" DbType="Int" />
+    <Return Type="object" />
+  </Function>
+  <Function Name="dbo.SP_UPDATEProduct" Method="SP_UPDATEProduct">
+    <Parameter Name="ProductId" Parameter="productId" Type="System.Int32" DbType="Int" />
+    <Parameter Name="CategoryId" Parameter="categoryId" Type="System.Int32" DbType="Int" />
+    <Parameter Name="ProductName" Parameter="productName" Type="System.String" DbType="NVarChar(500)" />
+    <Return Type="System.Int32" />
+  </Function>
+  <Function Name="dbo.SP_DeleteProduct" Method="SP_DeleteProduct">
+    <Parameter Name="ProductId" Parameter="productId" Type="System.Int32" DbType="Int" />
+    <Return Type="System.Int32" />
+  </Function>
+  <Function Name="dbo.SP_InsertCategory" Method="SP_InsertCategory">
+    <Parameter Name="CategoryName" Parameter="categoryName" Type="System.String" DbType="NVarChar(500)" />
+    <Return Type="System.Int32" />
+  </Function>
+  <Function Name="dbo.SP_InsertProduct" Method="SP_InsertProduct">
+    <Parameter Name="CategoryId" Parameter="categoryId" Type="System.Int32" DbType="Int" />
+    <Parameter Name="ProductName" Parameter="productName" Type="System.String" DbType="NVarChar(500)" />
+    <Return Type="System.Int32" />
+  </Function>
+  <Function Name="dbo.SP_SELECTProduct" Method="SP_SELECTProduct">
+    <Parameter Name="pageno" Type="System.Int32" DbType="Int" />
+    <Parameter Name="pagesize" Type="System.Int32" DbType="Int" />
+    <ElementType Name="SP_SELECTProductResult">
+      <Column Name="Rowno" Type="System.Int64" DbType="BigInt" CanBeNull="true" />
+      <Column Name="TotalRow" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="ProductId" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="ProductName" Type="System.String" DbType="NVarChar(500)" CanBeNull="true" />
+      <Column Name="CategoryId" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="CategoryName" Type="System.String" DbType="NVarChar(500)" CanBeNull="true" />
+    </ElementType>
+  </Function>
+  <Function Name="dbo.SP_UpdateCategory" Method="SP_UpdateCategory">
+    <Parameter Name="CategoryId" Parameter="categoryId" Type="System.Int32" DbType="Int" />
+    <Parameter Name="CategoryName" Parameter="categoryName" Type="System.String" DbType="NVarChar(500)" />
+    <Return Type="System.Int32" />
+  </Function>
+  <Function Name="dbo.SP_SELECTCategory" Method="SP_SELECTCategory">
+    <Parameter Name="pageno" Type="System.Int32" DbType="Int" />
+    <Parameter Name="pagesize" Type="System.Int32" DbType="Int" />
+    <ElementType Name="SP_SELECTCategoryResult">
+      <Column Name="Rowno" Type="System.Int64" DbType="BigInt" CanBeNull="true" />
+      <Column Name="TotalRow" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="CategoryId" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="CategoryName" Type="System.String" DbType="NVarChar(500)" CanBeNull="true" />
+    </ElementType>
+  </Function>
+</Database>

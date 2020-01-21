@@ -1,0 +1,48 @@
+﻿@model Practical_Test_Interview.Models.Product.ProductModel
+
+@{
+    ViewBag.Title = "AddProduct";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    List<SelectListItem> Category = ViewBag.Category;
+}
+
+
+<div class="page-header">
+    <h1>Add Product</h1>
+   
+</div>
+@using (Ajax.BeginForm("SaveProduct", "Product", new AjaxOptions { HttpMethod = "POST" }))
+{
+    @Html.HiddenFor(m => m.ProductID)
+    <div class="row">
+         <div class="span6">
+        <span>
+            Category
+        </span>
+        <br />
+        @Html.DropDownListFor(m => m.CategoryID,new SelectList(Category, "Value", "Text",@Model.CategoryID),new { @class = "form-control" })  
+        @Html.ValidationMessageFor(m => m.CategoryID, "", new { @class = "error" })
+    </div>
+    <div class="span6">
+        <span>
+            Product Name
+        </span>
+        <br />
+        @Html.TextBoxFor(m => m.ProductName, new { @class = "form-control" })  
+        @Html.ValidationMessageFor(m => m.ProductName, "", new { @class = "error" })
+    </div>
+</div>
+    <div class="row">
+        <div class="span12">
+             <input type="submit" value="Save" />
+        </div>
+
+    </div>
+}
+
+
+<script src="/Scripts/jquery.unobtrusive-ajax.js"></script>
+<script src="/Scripts/jquery.validate.js"></script>
+<script src="/Scripts/jquery.validate.unobtrusive.js"></script>
+
+

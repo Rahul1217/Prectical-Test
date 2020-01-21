@@ -1,0 +1,147 @@
+﻿@using Practical_Test_Interview.Models.Common;
+@model List<Practical_Test_Interview.Models.Product.ProductModel>
+
+@{
+    PageFilterModel paging = ViewBag.paging;   
+}
+
+<style>
+    #tblproduct {
+        font-family: "Trebuchet MS", Arial, Helvetica, sans-serif;
+        border-collapse: collapse;
+        width: 100%;
+    }
+
+        #tblproduct td, #tblproduct th {
+            border: 1px solid #ddd;
+            padding: 8px;
+        }
+
+        #tblproduct tr:nth-child(even) {
+            background-color: #f2f2f2;
+        }
+
+        #tblproduct tr:hover {
+            background-color: #ddd;
+        }
+
+        #tblproduct th {
+            padding-top: 12px;
+            padding-bottom: 12px;
+            text-align: left;
+            background-color: #4CAF50;
+            color: white;
+        }
+
+
+         .pagination {
+        display: inline-block;
+    }
+
+        .pagination a {
+            color: black;
+            float: left;
+            padding: 8px 16px;
+            text-decoration: none;
+            border: 1px solid #ddd;
+        }
+
+            .pagination a.active {
+                background-color: #4CAF50;
+                color: white;
+                border: 1px solid #4CAF50;
+            }
+
+            .pagination a:hover:not(.active) {
+                background-color: #ddd;
+            }
+
+            .pagination a:first-child {
+                border-top-left-radius: 5px;
+                border-bottom-left-radius: 5px;
+            }
+
+            .pagination a:last-child {
+                border-top-right-radius: 5px;
+                border-bottom-right-radius: 5px;
+            }
+</style>
+<div>
+    @if (Model.Count > 0)
+    {
+        <table id="tblproduct">
+            <thead>
+                <tr>
+                    <th>Product ID
+                    </th>
+                    <th>Product Name
+                    </th>
+                    <th>Category ID
+                    </th>
+                    <th>Category Name
+                    </th>
+                    <th>Action
+                    </th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model)
+                {
+                    <tr>
+                        <td>
+                            <span>
+                                @item.ProductID.ToString()
+                            </span>
+                        </td>
+                        <td>
+                            <span>
+                                @item.ProductName
+                            </span>
+                        </td>
+                        <td>
+                            <span>
+                                @item.CategoryID.ToString()
+                            </span>
+                        </td>
+                        <td>
+                            <span>
+                                @item.CategoryName
+                            </span>
+                        </td>
+                        <td>
+                            <a href="~/Product/AddProduct?q=@item.ProductID.ToString()" >Edit</a>
+                            <a href="~/Product/DeleteProduct?q=@item.ProductID.ToString()" >Delete</a>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    }
+    else
+    {
+        <div>
+            <h3>Record Not Found....
+            </h3>
+        </div> 
+    }
+
+</div>
+<br />
+<div class="pagination">
+
+    <a class="active" href="#">Showing @(paging.PageNo==1?1:(((paging.PageNo-1)*paging.PageSize))+1) To @(paging.PageNo==1?paging.PageSize:(@paging.totalRecord>((paging.PageNo)*paging.PageSize)?((paging.PageNo)*paging.PageSize):@paging.totalRecord)) Of @paging.totalRecord</a>
+
+</div>
+<div class="pagination" style="float: inline-end;">
+    <a href="#" onclick="callprevpage(@((paging.PageNo>1)?(paging.PageNo-1):paging.PageNo))">&laquo;</a>
+    <a class="active" href="#">Page @paging.PageNo Of @paging.totalpage</a>
+    <a href="#" onclick="callnextpage(@((paging.PageNo<paging.totalpage)?(paging.PageNo+1):paging.PageNo))">&raquo;</a>
+</div>
+<script src="~/Scripts/ASPSnippets_Pager.min.js"></script>
+
+<script>
+    $(document).ready(function () {
+
+    });
+ 
+</script>

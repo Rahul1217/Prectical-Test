@@ -1,0 +1,37 @@
+﻿@model Practical_Test_Interview.Models.Category.CategoryModel
+
+@{
+    ViewBag.Title = "AddCategory";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="page-header">
+    <h1>Add Category</h1>
+   
+</div>
+@using (Ajax.BeginForm("SaveCatagory", "Category", new AjaxOptions { HttpMethod = "POST" }))
+{
+    @Html.HiddenFor(m => m.CategoryID)
+    <div class="row">
+    <div class="span6">
+        <span>
+            Category Name
+        </span>
+        <br />
+        @Html.TextBoxFor(m => m.CategoryName, new { @class = "form-control" })  
+        @Html.ValidationMessageFor(m => m.CategoryName, "", new { @class = "error" })
+    </div>
+</div>
+    <div class="row">
+        <div class="span12">
+             <input type="submit" value="Save" />
+        </div>
+
+    </div>
+}
+
+
+<script src="/Scripts/jquery.unobtrusive-ajax.js"></script>
+<script src="/Scripts/jquery.validate.js"></script>
+<script src="/Scripts/jquery.validate.unobtrusive.js"></script>
+
