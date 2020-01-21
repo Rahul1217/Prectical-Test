@@ -1,0 +1,358 @@
+
+GO
+
+/****** Object:  Database [DbProduct]    Script Date: 01/22/2020 02:31:37 ******/
+CREATE DATABASE [DbProduct] ON  PRIMARY 
+( NAME = N'DbProduct', FILENAME = N'C:\Program Files\Microsoft SQL Server\MSSQL10_50.MSSQLSERVER\MSSQL\DATA\DbProduct.mdf' , SIZE = 2048KB , MAXSIZE = UNLIMITED, FILEGROWTH = 1024KB )
+ LOG ON 
+( NAME = N'DbProduct_log', FILENAME = N'C:\Program Files\Microsoft SQL Server\MSSQL10_50.MSSQLSERVER\MSSQL\DATA\DbProduct_log.ldf' , SIZE = 1024KB , MAXSIZE = 2048GB , FILEGROWTH = 10%)
+GO
+
+ALTER DATABASE [DbProduct] SET COMPATIBILITY_LEVEL = 100
+GO
+
+IF (1 = FULLTEXTSERVICEPROPERTY('IsFullTextInstalled'))
+begin
+EXEC [DbProduct].[dbo].[sp_fulltext_database] @action = 'enable'
+end
+GO
+
+ALTER DATABASE [DbProduct] SET ANSI_NULL_DEFAULT OFF 
+GO
+
+ALTER DATABASE [DbProduct] SET ANSI_NULLS OFF 
+GO
+
+ALTER DATABASE [DbProduct] SET ANSI_PADDING OFF 
+GO
+
+ALTER DATABASE [DbProduct] SET ANSI_WARNINGS OFF 
+GO
+
+ALTER DATABASE [DbProduct] SET ARITHABORT OFF 
+GO
+
+ALTER DATABASE [DbProduct] SET AUTO_CLOSE OFF 
+GO
+
+ALTER DATABASE [DbProduct] SET AUTO_CREATE_STATISTICS ON 
+GO
+
+ALTER DATABASE [DbProduct] SET AUTO_SHRINK OFF 
+GO
+
+ALTER DATABASE [DbProduct] SET AUTO_UPDATE_STATISTICS ON 
+GO
+
+ALTER DATABASE [DbProduct] SET CURSOR_CLOSE_ON_COMMIT OFF 
+GO
+
+ALTER DATABASE [DbProduct] SET CURSOR_DEFAULT  GLOBAL 
+GO
+
+ALTER DATABASE [DbProduct] SET CONCAT_NULL_YIELDS_NULL OFF 
+GO
+
+ALTER DATABASE [DbProduct] SET NUMERIC_ROUNDABORT OFF 
+GO
+
+ALTER DATABASE [DbProduct] SET QUOTED_IDENTIFIER OFF 
+GO
+
+ALTER DATABASE [DbProduct] SET RECURSIVE_TRIGGERS OFF 
+GO
+
+ALTER DATABASE [DbProduct] SET  DISABLE_BROKER 
+GO
+
+ALTER DATABASE [DbProduct] SET AUTO_UPDATE_STATISTICS_ASYNC OFF 
+GO
+
+ALTER DATABASE [DbProduct] SET DATE_CORRELATION_OPTIMIZATION OFF 
+GO
+
+ALTER DATABASE [DbProduct] SET TRUSTWORTHY OFF 
+GO
+
+ALTER DATABASE [DbProduct] SET ALLOW_SNAPSHOT_ISOLATION OFF 
+GO
+
+ALTER DATABASE [DbProduct] SET PARAMETERIZATION SIMPLE 
+GO
+
+ALTER DATABASE [DbProduct] SET READ_COMMITTED_SNAPSHOT OFF 
+GO
+
+ALTER DATABASE [DbProduct] SET HONOR_BROKER_PRIORITY OFF 
+GO
+
+ALTER DATABASE [DbProduct] SET  READ_WRITE 
+GO
+
+ALTER DATABASE [DbProduct] SET RECOVERY FULL 
+GO
+
+ALTER DATABASE [DbProduct] SET  MULTI_USER 
+GO
+
+ALTER DATABASE [DbProduct] SET PAGE_VERIFY CHECKSUM  
+GO
+
+ALTER DATABASE [DbProduct] SET DB_CHAINING OFF 
+GO
+
+
+GO
+
+/****** Object:  Table [dbo].[tblCategory]    Script Date: 01/22/2020 02:32:15 ******/
+SET ANSI_NULLS ON
+GO
+
+SET QUOTED_IDENTIFIER ON
+GO
+
+CREATE TABLE [dbo].[tblCategory](
+	[CategoryId] [int] IDENTITY(1,1) NOT NULL,
+	[CategoryName] [nvarchar](500) NULL,
+ CONSTRAINT [PK_tblCategory] PRIMARY KEY CLUSTERED 
+(
+	[CategoryId] ASC
+)WITH (PAD_INDEX  = OFF, STATISTICS_NORECOMPUTE  = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS  = ON, ALLOW_PAGE_LOCKS  = ON) ON [PRIMARY]
+) ON [PRIMARY]
+
+GO
+
+GO
+
+/****** Object:  Table [dbo].[tblProducts]    Script Date: 01/22/2020 02:32:41 ******/
+SET ANSI_NULLS ON
+GO
+
+SET QUOTED_IDENTIFIER ON
+GO
+
+CREATE TABLE [dbo].[tblProducts](
+	[ProductId] [int] IDENTITY(1,1) NOT NULL,
+	[CategoryId] [int] NULL,
+	[ProductName] [nvarchar](500) NULL,
+ CONSTRAINT [PK_tblProducts] PRIMARY KEY CLUSTERED 
+(
+	[ProductId] ASC
+)WITH (PAD_INDEX  = OFF, STATISTICS_NORECOMPUTE  = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS  = ON, ALLOW_PAGE_LOCKS  = ON) ON [PRIMARY]
+) ON [PRIMARY]
+
+GO
+
+ALTER TABLE [dbo].[tblProducts]  WITH CHECK ADD  CONSTRAINT [FK_CategoryId] FOREIGN KEY([ProductId])
+REFERENCES [dbo].[tblProducts] ([ProductId])
+GO
+
+ALTER TABLE [dbo].[tblProducts] CHECK CONSTRAINT [FK_CategoryId]
+GO
+
+GO
+/****** Object:  StoredProcedure [dbo].[SP_DeleteCategory]    Script Date: 01/22/2020 02:35:32 ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+-- =============================================
+-- Author:		Rahul
+-- Create date: 20-01-2020
+-- Description:	<Description,,>
+-- =============================================
+ALTER PROCEDURE [dbo].[SP_DeleteCategory]
+    @CategoryId int
+AS
+BEGIN
+	Delete FROM dbo.tblProduct
+	where CategoryId=@CategoryId
+	
+	Delete FROM dbo.tblCategory
+	where CategoryId=@CategoryId
+END
+
+GO
+/****** Object:  StoredProcedure [dbo].[SP_DeleteProduct]    Script Date: 01/22/2020 02:36:00 ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+-- =============================================
+-- Author:		Rahul
+-- Create date: 20-01-2020
+-- Description:	<Description,,>
+-- =============================================
+ALTER PROCEDURE [dbo].[SP_DeleteProduct]
+    @ProductId int
+AS
+BEGIN
+	Delete FROM dbo.tblProducts
+	where ProductId=@ProductId
+	
+END
+GO
+/****** Object:  StoredProcedure [dbo].[SP_InsertCategory]    Script Date: 01/22/2020 02:36:16 ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+-- =============================================
+-- Author:		Rahul
+-- Create date: 20-01-2020
+-- Description:	<Description,,>
+-- =============================================
+ALTER PROCEDURE [dbo].[SP_InsertCategory]
+	@CategoryName nvarchar(500)
+AS
+BEGIN
+	insert into dbo.tblCategory(CategoryName)
+	values (@CategoryName)
+END
+
+GO
+/****** Object:  StoredProcedure [dbo].[SP_InsertProduct]    Script Date: 01/22/2020 02:36:31 ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+-- =============================================
+-- Author:		Rahul
+-- Create date: 20-01-2020
+-- Description:	<Description,,>
+-- =============================================
+ALTER PROCEDURE [dbo].[SP_InsertProduct]
+    @CategoryId int,
+	@ProductName nvarchar(500)
+AS
+BEGIN
+	insert into dbo.tblProducts(CategoryId,ProductName)
+	values (@CategoryId,@ProductName)
+END
+
+GO
+/****** Object:  StoredProcedure [dbo].[SP_SELECTCategory]    Script Date: 01/22/2020 02:36:46 ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+-- =============================================
+-- Author:		Rahul
+-- Create date: 20-01-2020
+-- Description:	<Description,,>
+-- =============================================
+-- SP_SELECTCategory 1,10
+ALTER PROCEDURE [dbo].[SP_SELECTCategory]
+	@pageno int,
+	@pagesize int
+AS
+BEGIN
+DECLARE @startpageno int,@Endpageno int
+IF(@pageno=1)
+BEGIN
+	SET @startpageno=1
+	SET @Endpageno=@pagesize
+END
+ELSE
+BEGIN
+	SET @startpageno=((@pageno-1)*@pagesize)
+	SET @Endpageno=(@pageno*@pagesize)
+END
+
+;WITH Category AS
+( SELECT ROW_NUMBER() OVER(ORDER BY CategoryId) Rowno,COUNT(*) TotalRow,CategoryId,CategoryName
+  FROM dbo.tblCategory
+  GROUP BY CategoryId,CategoryName
+  
+)
+SELECT Rowno,TotalRow,CategoryId,CategoryName
+FROM Category
+
+END
+
+GO
+/****** Object:  StoredProcedure [dbo].[SP_SELECTProduct]    Script Date: 01/22/2020 02:37:01 ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+-- =============================================
+-- Author:		Rahul
+-- Create date: 20-01-2020
+-- Description:	<Description,,>
+-- =============================================
+-- SP_SELECTProduct 1,10
+ALTER PROCEDURE [dbo].[SP_SELECTProduct]
+	@pageno int,
+	@pagesize int
+AS
+BEGIN
+DECLARE @startpageno int,@Endpageno int
+IF(@pageno=1)
+BEGIN
+	SET @startpageno=1
+	SET @Endpageno=@pagesize
+END
+ELSE
+BEGIN
+	SET @startpageno=((@pageno-1)*@pagesize)+1
+	SET @Endpageno=(@pageno*@pagesize)
+END
+
+;WITH Product AS
+( 
+	  SELECT ROW_NUMBER() OVER(ORDER BY ProductId) Rowno,(SELECT COUNT(*) From dbo.tblProducts) TotalRow
+	  ,p.ProductId,p.ProductName,c.CategoryId,c.CategoryName 
+	  FROM dbo.tblProducts p join dbo.tblCategory c on p.CategoryId=c.CategoryId 
+	  GROUP BY p.ProductId,p.ProductName,c.CategoryId,c.CategoryName 
+	
+  
+)
+SELECT Rowno,TotalRow,ProductId,ProductName,CategoryId,CategoryName
+FROM Product
+where Rowno>=@startpageno and Rowno<=@Endpageno
+END
+
+GO
+/****** Object:  StoredProcedure [dbo].[SP_UpdateCategory]    Script Date: 01/22/2020 02:37:20 ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+-- =============================================
+-- Author:		Rahul
+-- Create date: 20-01-2020
+-- Description:	<Description,,>
+-- =============================================
+ALTER PROCEDURE [dbo].[SP_UpdateCategory]
+    @CategoryId int,
+	@CategoryName nvarchar(500)
+AS
+BEGIN
+	Update dbo.tblCategory
+	SET CategoryName=@CategoryName
+	where CategoryId=@CategoryId
+END
+
+GO
+/****** Object:  StoredProcedure [dbo].[SP_UPDATEProduct]    Script Date: 01/22/2020 02:37:34 ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+-- =============================================
+-- Author:		Rahul
+-- Create date: 20-01-2020
+-- Description:	<Description,,>
+-- =============================================
+ALTER PROCEDURE [dbo].[SP_UPDATEProduct]
+	@ProductId int,
+    @CategoryId int,
+	@ProductName nvarchar(500)
+AS
+BEGIN
+	UPDATE dbo.tblProducts
+	set CategoryId=@CategoryId
+	,ProductName=@ProductName
+	where ProductId=@ProductId
+END
